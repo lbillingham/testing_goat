@@ -1,0 +1,3 @@
+*.swp
+superlists/lists/__pycache__/
+superlists/superlists/__pycache__/
