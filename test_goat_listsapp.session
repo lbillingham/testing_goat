@@ -12,24 +12,25 @@ let EnhCommentifyUserBindings = "Yes"
 let DidEnhancedCommentify =  1 
 let EnhCommentifyUseBlockIndent = "Yes"
 silent only
-cd ~/Documents/Python\ Scripts/testing_goat/superlists/functional_tests
+cd ~/Documents/Python\ Scripts/testing_goat/superlists
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +1 /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/lists/views.py
-badd +23 /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/superlists/urls.py
-badd +11 /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/lists/templates/home.html
-badd +42 /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/superlists/settings.py
-badd +90 /Users/laurence/Documents/Python\ Scripts/testing_goat/test_goat_listsapp.session
-badd +4 /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/lists/models.py
-badd +15 /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/TO_DO_LIST.txt
-badd +1 /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/lists/admin.py
-badd +0 tests.py
+badd +1 lists/views.py
+badd +23 superlists/urls.py
+badd +11 lists/templates/home.html
+badd +42 superlists/settings.py
+badd +4 lists/models.py
+badd +19 TO_DO_LIST.txt
+badd +1 lists/admin.py
+badd +56 functional_tests/tests.py
+badd +0 lists/tests.py
+badd +0 lists/templates/list.html
 silent! argdel *
-set lines=53 columns=115
-winpos 935 0
-edit /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/lists/views.py
+set lines=57 columns=115
+winpos 0 0
+edit lists/views.py
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -44,13 +45,55 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 25) / 51)
+let s:l = 5 - ((4 * winheight(0) + 27) / 55)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+5
+normal! 01l
+tabedit superlists/urls.py
+set splitbelow splitright
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 6 - ((5 * winheight(0) + 27) / 55)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+6
+normal! 06l
+tabedit lists/templates/list.html
+set splitbelow splitright
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 1
 normal! 0
-tabedit /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/superlists/urls.py
+tabedit lists/templates/home.html
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -65,55 +108,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 23 - ((22 * winheight(0) + 25) / 51)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-23
-normal! 0
-tabedit tests.py
-set splitbelow splitright
-set nosplitright
-wincmd t
-set winheight=1 winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 25) / 51)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-1
-normal! 0
-tabedit /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/lists/templates/home.html
-set splitbelow splitright
-set nosplitright
-wincmd t
-set winheight=1 winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 11 - ((10 * winheight(0) + 25) / 51)
+let s:l = 11 - ((1 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 11
 normal! 0
-tabedit /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/superlists/settings.py
+tabedit superlists/settings.py
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -128,13 +129,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 42 - ((25 * winheight(0) + 25) / 51)
+let s:l = 42 - ((1 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 42
 normal! 0
-tabedit /Users/laurence/Documents/Python\ Scripts/testing_goat/test_goat_listsapp.session
+tabedit lists/models.py
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -149,34 +150,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 90 - ((25 * winheight(0) + 25) / 51)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-90
-normal! 0
-tabedit /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/lists/models.py
-set splitbelow splitright
-set nosplitright
-wincmd t
-set winheight=1 winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 4 - ((3 * winheight(0) + 25) / 51)
+let s:l = 4 - ((1 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 4
 normal! 0
-tabedit /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/TO_DO_LIST.txt
+tabedit TO_DO_LIST.txt
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -191,13 +171,13 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 15 - ((14 * winheight(0) + 25) / 51)
+let s:l = 15 - ((14 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 15
-normal! 0
-tabedit /Users/laurence/Documents/Python\ Scripts/testing_goat/superlists/lists/admin.py
+normal! 064l
+tabedit lists/admin.py
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -212,13 +192,55 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 25) / 51)
+let s:l = 1 - ((0 * winheight(0) + 11) / 23)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 1
 normal! 0
-tabnext 3
+tabedit functional_tests/tests.py
+set splitbelow splitright
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 77 - ((37 * winheight(0) + 27) / 55)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+77
+normal! 0
+tabedit lists/tests.py
+set splitbelow splitright
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 52 - ((30 * winheight(0) + 27) / 55)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+52
+normal! 053l
+tabnext 7
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf
 endif
