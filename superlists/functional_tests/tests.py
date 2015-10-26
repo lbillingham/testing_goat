@@ -12,7 +12,9 @@ class NewVisitorTest(LiveServerTestCase):
         #self.browser.implicitly_wait(3)
 
     def tearDown(self):
+        #self.browser.refresh()
         self.browser.quit()
+
     def check_for_row_in_list_table(self, row_text):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
@@ -42,7 +44,7 @@ class NewVisitorTest(LiveServerTestCase):
         # and now the (new) page lists
         # "1: Buy peacock feathers" as an item in a to-do list table'
         inputbox.send_keys(Keys.ENTER)
-        edith_list_url =  self.browser.current_url
+        edith_list_url = self.browser.current_url
         self.assertRegex(edith_list_url, '/lists/.+')
         self.check_for_row_in_list_table('1: Buy peacock feathers')
 
@@ -60,7 +62,7 @@ class NewVisitorTest(LiveServerTestCase):
         #
         ## We use a new browser session to make sure that none of Edith's information
         ## is comming through cookies etc.
-        self.browser.quit()
+        #self.browser.quit()
         self.browser = webdriver.Firefox()
 
         # Francis visits the home page... no sign of Edith's list
