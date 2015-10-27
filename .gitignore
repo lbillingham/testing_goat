@@ -1,4 +1,4 @@
 *.swp
 superlists/lists/__pycache__/
 superlists/superlists/__pycache__/
-functional_tests/__pycache__/
+superlists/functional_tests/__pycache__/
