@@ -1,0 +1,20 @@
+# scratchpad for things we _will_ fix about the lists app
+
+    ~~ 1. POST test is to long (stinky) ~~
+    ~~ 2. don't save empty `Item()` with every request made to `home_page` ~~
+    ~~ 3. whole world shares a single list... I guess everyone needs to know when `user` needs to buy bread and milk ~~
+    ~~ 4. table only displays a single item               ~~
+    ~~ 5. tests could br DRY-er. We repeat:               ~~
+    ~~ ```python                                          ~~
+    ~~     request = HttpRequest()                        ~~
+    ~~     request.method = 'POST'                        ~~
+    ~~     request.POST['item_text'] = 'A new list item'  ~~
+    ~~     response = home_page(request)                  ~~
+    ~~ ```                                                ~~
+    ~~    a couple of times~~
+    ~~ 6. functional tests leave traces on the DB after they are run. Make them cklean up after themselves ~~
+    ~~ 7. Change model so items are associated with different lists ~~
+    ~~ 8. Unique URLs for each list ~~
+    ~~ 9. URL for creating a new list: via POST ~~
+    ~~ 10. Add URLs for adding new item to extant list via POST ~~
+    11. Refactor `urls.py` to reduct duplication
