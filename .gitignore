@@ -2,3 +2,6 @@
 superlists/lists/__pycache__/
 superlists/superlists/__pycache__/
 superlists/functional_tests/__pycache__/
+virtualenv/
+*.pyc
+*.sqlite3
