@@ -1,0 +1,9 @@
+name: testing_goat
+channels:
+  - lbillingham
+dependencies:
+  - python=3.4   # or 2.7 if you are feeling nostalgic
+  - django=1.8
+  - pylint
+  - pip:
+    - selenium
