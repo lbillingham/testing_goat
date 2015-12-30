@@ -1,0 +1,8 @@
+[live]
+superlists.tinglingham.co.uk
+
+[staging]
+superlists-staging.tinglingham.co.uk
+
+[local]
+localhost ansible_ssh_port=6666 anisbl_host=127.0.0.1
