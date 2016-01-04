@@ -9,6 +9,7 @@
     * see *nginx.template.conf*
     * replace `SITENAME` with, eg, *staging.my-domain.com*
 
+    
 5. Add Upstart job for Gunicorn
 
     * see *gunicorn-upstart.template.conf*
