@@ -17,4 +17,5 @@
     ~~ 8. Unique URLs for each list ~~
     ~~ 9. URL for creating a new list: via POST ~~
     ~~ 10. Add URLs for adding new item to extant list via POST ~~
-    11. Refactor `urls.py` to reduct duplication
+    11. Refactor `urls.py` to reduce duplication
+    12. Remove hardcoded URLs from view.py
