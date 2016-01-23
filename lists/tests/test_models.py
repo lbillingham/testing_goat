@@ -105,33 +105,3 @@ class ListViewTest(TestCase):
         correct_list = List.objects.create()
         response = self.client.get('/lists/{0:d}/'.format(correct_list.id))
         self.assertEqual(response.context['list'], correct_list)
-
-
-class ListAndItemModelTests(TestCase):
-    def test_saving_and_retrieving_items(self):
-        list_ = List()
-        list_.save()
-
-        first_item = Item()
-        first_item.text = 'the 1st (ever) list item'
-        first_item.list = list_
-        first_item.save()
-
-        second_item = Item()
-        second_item.text = 'item numero 2'
-        second_item.list = list_
-        second_item.save()
-
-        saved_list = List.objects.first()
-
-        saved_items = Item.objects.all()
-        self.assertEqual(saved_items.count(), 2)
-
-        first_saved_item = saved_items[0]
-        second_saved_item = saved_items[1]
-        self.assertEqual(first_saved_item.text, first_item.text)
-        self.assertEqual(first_saved_item.list, list_)
-        self.assertEqual(second_saved_item.text, second_item.text)
-        self.assertEqual(second_item.list, list_)
-
-
