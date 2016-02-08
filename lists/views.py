@@ -28,5 +28,7 @@ def add_item(request, list_id):
     try:
         item.full_clean()
     except ValidationError as ve:
-        return render(request, 'home.html')
+        list_.delete()
+        error = "You can't have an empty list item"
+        return render(request, 'home.html', {"error": error})
     return redirect('/lists/{0:d}/'.format(list_.id))
