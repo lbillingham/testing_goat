@@ -18,4 +18,5 @@
     ~~ 9. URL for creating a new list: via POST ~~
     ~~ 10. Add URLs for adding new item to extant list via POST ~~
     11. Refactor `urls.py` to reduce duplication
-    12. Remove hardcoded URLs from view.py
+    12. Remove hardcoded URLs from views.py
+    13. Remove haardcoded URL from forms in *list.html* and *home.html*
