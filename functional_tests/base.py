@@ -21,7 +21,12 @@ class FunctionalTest(StaticLiveServerTestCase):
             super().tearDownClass()
 
     def setUp(self):
-        self.browser = webdriver.Firefox()
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference("browser.startup.homepage", "about:blank");
+        profile.set_preference("startup.homepage_welcome_url", "about:blank");
+        profile.set_preference("startup.homepage_welcome_url.additional", "about:blank");
+
+        self.browser = webdriver.Firefox(profile)
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
