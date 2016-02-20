@@ -21,12 +21,13 @@ class FunctionalTest(StaticLiveServerTestCase):
             super().tearDownClass()
 
     def setUp(self):
-        profile = webdriver.FirefoxProfile()
-        profile.set_preference("browser.startup.homepage", "about:blank");
-        profile.set_preference("startup.homepage_welcome_url", "about:blank");
-        profile.set_preference("startup.homepage_welcome_url.additional", "about:blank");
+        # profile = webdriver.FirefoxProfile()
+        # profile.set_preference("browser.startup.homepage", "about:blank");
+        # profile.set_preference("startup.homepage_welcome_url", "about:blank");
+        # profile.set_preference("startup.homepage_welcome_url.additional", "about:blank");
+        # self.browser = webdriver.Firefox(profile)
 
-        self.browser = webdriver.Firefox(profile)
+        self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
@@ -37,3 +38,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(row_text, [row.text for row in rows])
+
+    def get_item_input_box(self):
+        box = self.browser.find_element_by_id('id_text')
+        return box
