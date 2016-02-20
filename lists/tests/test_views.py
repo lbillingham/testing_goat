@@ -54,13 +54,6 @@ class NewListTest(TestCase):
         new_list = List.objects.first()
         self.assertRedirects(response, '/lists/{0:d}/'.format(new_list.id))
 
-    # def test_validation_errors_are_sent_back_to_home_page_template(self):
-    #     response = self.client.post('/lists/new' , data={'text':''})
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'home.html')
-    #     expected_error = escape(EMPTY_ITEM_ERROR)
-    #     self.assertContains(response, expected_error)
-
     def test_for_invalid_input_renders_home_template(self):
         response = self.client.post('/lists/new', data={'text': ''})
         self.assertEqual(response.status_code, 200)
@@ -87,7 +80,7 @@ class ListViewTest(TestCase):
         response = self.client.get('/lists/{0:d}/'.format(list_.id))
         self.assertTemplateUsed(response, 'list.html')
 
-    def test_displays_all_items(self):
+    def test_displays_all_items(self):#
         list_ = List.objects.create()
         Item.objects.create(text='ooo item 1', list=list_)
         Item.objects.create(text='two-thy item', list=list_)
@@ -96,6 +89,21 @@ class ListViewTest(TestCase):
 
         self.assertContains(response, 'ooo item 1')
         self.assertContains(response, 'two-thy item')
+
+    def test_displays_only_items_for_that_list(self):
+        correct_list = List.objects.create()
+        Item.objects.create(text='item numero uno', list=correct_list)
+        Item.objects.create(text='item numero dos', list=correct_list)
+        other_list = List.objects.create()
+        Item.objects.create(text='list otra item 1', list=other_list)
+        Item.objects.create(text='list otra item 2', list=other_list)
+
+        response = self.client.get('/lists/{:d}/'.format(correct_list.id,))
+
+        self.assertContains(response, 'item numero uno')
+        self.assertContains(response, 'item numero dos')
+        self.assertNotContains(response, 'list otra item 1')
+        self.assertNotContains(response, 'list otra item 2')
 
     def test_passes_correct_list_to_template(self):
         other_list = List.objects.create()
@@ -106,7 +114,6 @@ class ListViewTest(TestCase):
     def test_can_save_POST_request_to_existing_list(self):
         other_list = List.objects.create()
         correct_list = List.objects.create()
-
         self.client.post(
                 '/lists/{0:d}/'.format(correct_list.id),
                 data={'text': 'A new item for an existing list'}
@@ -127,13 +134,32 @@ class ListViewTest(TestCase):
 
         self.assertRedirects(response, '/lists/{0:d}/'.format(correct_list.id))
 
-    def test_validation_errors_end_up_on_lists_page(self):
+    def test_displays_item_form(self):
         list_ = List.objects.create()
-        response = self.client.post(
-            '/lists/{0:d}/'.format(list_.id),
-            data={'text':''}
-            )
-        self.assertEqual(response.status_code, 200) # OK
+        response = self.client.get('/lists/{:d}/'.format(list_.id))
+        self.assertIsInstance(response.context['form'], ItemForm)
+        self.assertContains(response, 'name="text"')
+
+    def post_invalid_input(self):#
+        list_ = List.objects.create()
+        return self.client.post(
+            '/lists/{:d}/'.format(list_.id),
+            data={'text': ''}
+        )
+
+    def test_for_invalid_input_nothing_saved_to_db(self):#
+        self.post_invalid_input()
+        self.assertEqual(Item.objects.count(), 0)
+
+    def test_for_invalid_input_renders_list_template(self):#
+        response = self.post_invalid_input()
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'list.html')
-        expected_error = escape("You can't have an empty list item")
-        self.assertContains(response, expected_error)
+
+    def test_for_invalid_input_passes_form_to_template(self):#
+        response = self.post_invalid_input()
+        self.assertIsInstance(response.context['form'], ItemForm)
+
+    def test_for_invalid_input_shows_error_on_page(self):#
+        response = self.post_invalid_input()
+        self.assertContains(response, escape(EMPTY_ITEM_ERROR))
