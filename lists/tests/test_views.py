@@ -147,19 +147,31 @@ class ListViewTest(TestCase):
             data={'text': ''}
         )
 
-    def test_for_invalid_input_nothing_saved_to_db(self):#
+    def test_for_invalid_input_nothing_saved_to_db(self):
         self.post_invalid_input()
         self.assertEqual(Item.objects.count(), 0)
 
-    def test_for_invalid_input_renders_list_template(self):#
+    def test_for_invalid_input_renders_list_template(self):
         response = self.post_invalid_input()
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'list.html')
 
-    def test_for_invalid_input_passes_form_to_template(self):#
+    def test_for_invalid_input_passes_form_to_template(self):
         response = self.post_invalid_input()
         self.assertIsInstance(response.context['form'], ItemForm)
 
-    def test_for_invalid_input_shows_error_on_page(self):#
+    def test_for_invalid_input_shows_error_on_page(self):
         response = self.post_invalid_input()
         self.assertContains(response, escape(EMPTY_ITEM_ERROR))
+
+    def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
+        list_ = List.objects.create()
+        item1 = Item.objects.create(list=list_, text='yay text')
+        response = self.client.post(
+            '/lists/{0:d}'.format(list_.id),
+            data={'text': 'yay text'}
+        )
+        expected_error = escape("You've already got this in your list")
+        self.assertContains(response, expected_error)
+        self.assertTemplateUsed(response, 'list.html')
+        self.assertEqual(Item.objects.all().count(), 1)
