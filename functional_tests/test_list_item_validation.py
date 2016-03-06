@@ -5,6 +5,10 @@ class ItemValidationTest(FunctionalTest):
     """
     Tests that we complain if we are given invlaid list items
     """
+    def get_error_element(self):
+        error = self.browser.find_element_by_css_selector('.has-error')
+        return error
+
     def test_cannot_add_empty_list_item(self):
         # Edith goes to the home page and accidentally tries to submit an empty
         # list item: she hits <Enter> on an empty text box.
@@ -12,7 +16,7 @@ class ItemValidationTest(FunctionalTest):
         self.get_item_input_box().send_keys('\n')
         # The home page refreshes, there is an error message saying that list
         # items cannot be blank.
-        error = self.browser.find_element_by_css_selector('.has-error')
+        error = self.get_error_element()
         self.assertEqual(error.text, "You can't have an empty list item")
         # Edith tries again, this time providing text for the item.
         # This now works.
@@ -24,7 +28,7 @@ class ItemValidationTest(FunctionalTest):
 
         # She receives a similar warning on the list page
         self.check_for_row_in_list_table('1: Buy milk')
-        error = self.browser.find_element_by_css_selector('.has-error')
+        error = self.get_error_element()
         self.assertEqual(error.text, "You can't have an empty list item")
 
         # And she can correct it by filling some text in
@@ -43,6 +47,20 @@ class ItemValidationTest(FunctionalTest):
 
         # she sees a helpful error message
         self.check_for_row_in_list_table('1: Buy wellies')
-        error = self.browser.find_element_by_css_selector('.has-error')
+        error = self.get_error_element()
         self.assertEqual(error.text,
                          "You've already got this item in your list")
+
+    def test_error_messages_cleared_on_valid_input(self):
+        # Edith starts a new list but causes a validation arror
+        self.browser.get(self.server_url)
+        self.get_item_input_box().send_keys('\n')
+        error = self.get_error_element()
+        self.assertTrue(error.is_displayed())
+
+        # she starts typing in the input box to clear the error
+        self.get_item_input_box().send_keys('v')
+
+        # happily, the error-message disappears
+        error = self.get_error_element()
+        self.assertFalse(error.is_displayed())
