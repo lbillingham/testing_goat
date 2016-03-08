@@ -51,7 +51,7 @@ class ItemValidationTest(FunctionalTest):
         self.assertEqual(error.text,
                          "You've already got this item in your list")
 
-    def test_error_messages_cleared_on_valid_input(self):
+    def test_error_messages_cleared_on_input(self):
         # Edith starts a new list but causes a validation arror
         self.browser.get(self.server_url)
         self.get_item_input_box().send_keys('\n')
