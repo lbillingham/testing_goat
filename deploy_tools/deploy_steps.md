@@ -34,3 +34,9 @@
 7. Set `DEBUG = False` and `ALLOWED_HOSTS` in *settings.py*
 8. Restart Gunicorn job
 9. Run FTs to check everything works
+
+# Running fabric
+1. open the git-aware windows shell `C:\Program Files\Git\git-cmd.exe`
+2. `activate fabric` to use the installed `conda env`
+3. `cd $TEST_GOAT_HOME/source/deploy_tools/`
+3. `fab deploy:host=laurence@superlists-staging.tinglingham.co.uk`

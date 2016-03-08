@@ -19,6 +19,8 @@
     ~~ 10. Add URLs for adding new item to extant list via POST ~~
     ~~11. Refactor `urls.py` to reduce duplication~~
     ~~12. Remove hardcoded URLs from views.py~~
-    ~~13. Remove haardcoded URL from forms in *list.html* and *home.html*~~
+    ~~13. Remove hardcoded URL from forms in *list.html* and *home.html*~~
     ~~14. Validation logic in `views` is not DRY~~
-    15. deploy new code on live server
+    15. Deploy new code on live server
+    16. Try [appendix D](http://chimera.labs.oreilly.com/books/1234000000754/apd.html) on `.../database/db_in_need_of_data_migration.sqlite3.bak`
+    17. Try to get `js` to [hide error message on click](http://chimera.labs.oreilly.com/books/1234000000754/ch13.html#_javascript_testing_in_the_tdd_cycle)
