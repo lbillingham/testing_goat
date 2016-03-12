@@ -13,8 +13,8 @@ class Item(models.Model):
     list = models.ForeignKey(List, default=None, blank=False)
 
     class Meta:
-       unique_together = ('list', 'text')
-       ordering = ('id',)
+        unique_together = ('list', 'text')
+        ordering = ('id',)
 
     def __str__(self):
         return self.text
