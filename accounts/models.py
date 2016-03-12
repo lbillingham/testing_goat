@@ -4,6 +4,15 @@ from django.contrib.auth.models import (
 from django.db import models
 
 
+class ListUserManager(BaseUserManager):
+
+    def create_user(self, eamil):
+        ListUser.objects.create(email=email)
+
+    def create_superuser(self, email, password):
+        self.create_user(email)
+
+
 class ListUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(primary_key=True)
     USERNAME_FIELD = 'email'
@@ -17,12 +26,3 @@ class ListUser(AbstractBaseUser, PermissionsMixin):
     @property
     def is_active(self):
         return True
-
-
-class ListUserManager(BaseUserManager):
-
-    def create_user(self, eamil):
-        ListUser.objects.create(email=email)
-
-    def create_superuser(self, email, password):
-        self.create_user(email)
