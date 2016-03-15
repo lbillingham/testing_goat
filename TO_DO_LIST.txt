@@ -1,26 +1,45 @@
 # scratchpad for things we _will_ fix about the lists app
 
-    ~~ 1. POST test is to long (stinky) ~~
-    ~~ 2. don't save empty `Item()` with every request made to `home_page` ~~
-    ~~ 3. whole world shares a single list... I guess everyone needs to know when `user` needs to buy bread and milk ~~
-    ~~ 4. table only displays a single item               ~~
-    ~~ 5. tests could br DRY-er. We repeat:               ~~
-    ~~ ```python                                          ~~
-    ~~     request = HttpRequest()                        ~~
-    ~~     request.method = 'POST'                        ~~
-    ~~     request.POST['item_text'] = 'A new list item'  ~~
-    ~~     response = home_page(request)                  ~~
-    ~~ ```                                                ~~
-    ~~    a couple of times~~
-    ~~ 6. functional tests leave traces on the DB after they are run. Make them cklean up after themselves ~~
-    ~~ 7. Change model so items are associated with different lists ~~
-    ~~ 8. Unique URLs for each list ~~
-    ~~ 9. URL for creating a new list: via POST ~~
-    ~~ 10. Add URLs for adding new item to extant list via POST ~~
-    ~~11. Refactor `urls.py` to reduce duplication~~
-    ~~12. Remove hardcoded URLs from views.py~~
-    ~~13. Remove hardcoded URL from forms in *list.html* and *home.html*~~
-    ~~14. Validation logic in `views` is not DRY~~
-    15. Deploy new code on live server
-    16. Try [appendix D](http://chimera.labs.oreilly.com/books/1234000000754/apd.html) on `.../database/db_in_need_of_data_migration.sqlite3.bak`
-    17. Try to get `js` to [hide error message on click](http://chimera.labs.oreilly.com/books/1234000000754/ch13.html#_javascript_testing_in_the_tdd_cycle)
+1. ~~POST test is to long (stinky)~~
+1. ~~don't save empty `Item()` with
+every request made to `home_page`~~
+1. ~~whole world shares a single list... I
+guess everyone needs to know when `user` needs to buy bread and mil~~
+4. ~~table only displays a single item~~
+5. ~~tests could br DRY-er.~~
+    ~~We repeat:~~
+```python
+request = HttpRequest()
+request.method = 'POST'
+request.POST['item_text'] = 'A new list item'
+response =
+home_page(request)
+```
+~~a couple of times~~
+1. ~~functional tests leave traces on the DB after they are
+run. Make them cklean up after themselves~~
+1. ~~Change model so items are
+associated with different lists~~
+1. ~~Unique URLs for each list~~
+1. ~~URL for creating a new list: via POST~~
+1. ~~Add URLs for adding new item to
+extant list via POST~~
+11. ~~Refactor `urls.py` to reduce duplication~~
+12. ~~Remove hardcoded URLs from views.py~~ ~~
+13. ~~Remove hardcoded URL from forms in
+*list.html* and *home.html*~~ ~~
+14. ~~Validation logic in `views` is not DRY~~
+15. ~~Deploy new code on live server~~
+1. Try [appendix
+D](http://chimera.labs.oreilly.com/books/1234000000754/apd.html) on
+`.../database/db_in_need_of_data_migration.sqlite3.bak`
+17. Try to get `js` to [hide error message on
+click](http://chimera.labs.oreilly.com/books/1234000000754/ch13.html#_javascript_testing_in_the_tdd_cycle)
+18. fix `authentication.py, line 23`,
+```python
+in authenticate
+return self.get_user(email) ``` gives
+```shell
+ AttributeError:
+'PersonaAuthenicationBackend' object has no attribute 'get_user'
+```
