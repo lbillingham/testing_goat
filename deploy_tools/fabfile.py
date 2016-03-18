@@ -2,7 +2,7 @@ from fabric.contrib.files import append, exists, sed
 from fabric.api import env, local, run
 import random
 
-REPO_URL = 'git@bitbucket.org:lbillingham/testing_goat.git'
+REPO_URL = 'git@github.com:lbillingham/testing_goat.git'
 
 
 def deploy():
