@@ -87,6 +87,26 @@ test("onlogin sends assertion with csrf token", function () {
         'check POST data'
     );
 });
+
+test("onlogout as a placeholder", function () {
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
+    var onlogoutCallback = mockNavigator.id.watch.firstCall.args[0].onlogout;
+    equal(typeof onlogoutCallback, "function", "onlogout should be a function")
+});
+
+test("if onligin fails, should call navigator.id.logout", function () {
+    mockNavigator.id.logout = sinon.mock();
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
+    var onLoginCallback = mockNavigator.id.watch.firstCall.args[0].onlogin;
+    var server = sinon.fakeServer.create();
+    // sets up response but soesn't send it yet
+    server.respondWith([403, {}, "permission denied"]);
+    onLoginCallback();
+    equal(mockNavigator.id.logout.called, false, 'too early to logout')
+    server.respond();
+    equal(mockNavigator.id.logout.called, true, 'should call logout')
+
+});
     </script>
 
 </body>
