@@ -43,13 +43,13 @@
 
 </div>
 <script src="http://code.jquery.com/jquery.min.js"></script>
-<script src="http://login.person.org/include.js"></script>
-<script src="/accounts/list.js"></script>
+<script src="https://login.persona.org/include.js"></script>
+<script src="/static/accounts.js"></script>
 <script src="/static/list.js"></script>
 <script>
     $(document).ready(function () {
         var user = "{{ user.email }}" || null;
-        var token = "{{ csrf_token}}";
+        var token = "{{ csrf_token }}";
         var urls = {
             login: "TODO",
             logout: "TODO",
