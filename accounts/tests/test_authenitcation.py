@@ -16,7 +16,7 @@ class AuthenticateTest(TestCase):
         user.username = 'otherusername'
         user.save()
 
-    def test_sends_assertion_to_mozilla_with_doimain(self, mock_post):
+    def test_sends_assertion_to_mozilla_with_domain(self, mock_post):
         self.backend.authenticate('an assertion')
         mock_post.assert_called_once_with(
             PERSONA_VERIFY_URL,
@@ -25,6 +25,7 @@ class AuthenticateTest(TestCase):
 
     def test_returns_None_if_response_errors(self, mock_post):
         mock_post.return_value.ok = False
+        mock_post.return_value.json.return_value = {}
         user = self.backend.authenticate('an assertion')
         self.assertIsNone(user)
 
