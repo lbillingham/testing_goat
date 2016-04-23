@@ -3,7 +3,8 @@ import requests
 
 PERSONA_VERIFY_URL = 'https://verifier.login.persona.org/verify'
 DOMAIN = 'localhost'
-User =  get_user_model()
+User = get_user_model()
+
 
 class PersonaAuthenticationBackend(object):
 
@@ -13,4 +14,8 @@ class PersonaAuthenticationBackend(object):
             data={'assertion': assertion, 'audience': DOMAIN}
         )
         if response.ok and response.json()['status'] == 'okay':
-            return User.objects.get(email=response.json()['email'])
+            email = response.json()['email']
+            try:
+                return User.objects.get(email=email)
+            except User.DoesNotExist:
+                return User.objects.create(email=email)
