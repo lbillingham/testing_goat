@@ -50,3 +50,25 @@ class AuthenticateTest(TestCase):
         found_user = self.backend.authenticate('an assertion')
         new_user = User.objects.get(email='a@b.com')
         self.assertEqual(found_user, new_user)
+
+
+class GetUserTest(TestCase):
+
+    def test_gets_user_by_email(self):
+        backend = PersonaAuthenticationBackend()
+        other_user = User(email='other@user.com')
+        other_user.username = 'otheruser'
+        other_user.save()
+        desired_user = User(email='a@b.com')
+        desired_user.save()
+        found_user = backend.get_user('a@b.com')
+        # print('desired user\'s email: {}'.format(str(desired_user.email)))
+        # print('found user is None: {}'.format(None is found_user))
+        # print('found user\'s email: {}'.format(str(found_user.email)))
+        self.assertEqual(found_user, desired_user)
+
+    def test_returns_none_if_no_user_with_given_email(self):
+        backend = PersonaAuthenticationBackend()
+        self.assertIsNone(
+            backend.get_user('a@b.com')
+        )
