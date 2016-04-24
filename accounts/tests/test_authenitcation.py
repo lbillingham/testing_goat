@@ -59,12 +59,8 @@ class GetUserTest(TestCase):
         other_user = User(email='other@user.com')
         other_user.username = 'otheruser'
         other_user.save()
-        desired_user = User(email='a@b.com')
-        desired_user.save()
+        desired_user = User.objects.create(email='a@b.com')
         found_user = backend.get_user('a@b.com')
-        # print('desired user\'s email: {}'.format(str(desired_user.email)))
-        # print('found user is None: {}'.format(None is found_user))
-        # print('found user\'s email: {}'.format(str(found_user.email)))
         self.assertEqual(found_user, desired_user)
 
     def test_returns_none_if_no_user_with_given_email(self):
