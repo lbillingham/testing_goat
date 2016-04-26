@@ -70,6 +70,11 @@ TEMPLATES = [
     },
 ]
 
+AUTH_USER_MODEL = 'accounts.User'
+AUTHENTICATION_BACKENDS = (
+    'accounts.authentication.PersonAuthenticationBackend'
+)
+
 WSGI_APPLICATION = 'superlists.wsgi.application'
 
 
