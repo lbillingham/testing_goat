@@ -72,7 +72,7 @@ TEMPLATES = [
 
 AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = (
-    'accounts.authentication.PersonAuthenticationBackend'
+    'accounts.authentication.PersonaAuthenticationBackend',
 )
 
 WSGI_APPLICATION = 'superlists.wsgi.application'
