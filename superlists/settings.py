@@ -26,7 +26,7 @@ SECRET_KEY = '@xz@v9^&s6vag&7+bn*!mfgjka-krb2(osjdek(=8op&o$v6-e'
 DEBUG = True
 
 DOMAIN = 'localhost'  # should be changed by deploy script
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [DOMAIN]
 
 
 # Application definition
