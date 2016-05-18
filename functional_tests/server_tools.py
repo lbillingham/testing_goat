@@ -1,19 +1,18 @@
-from os import path
+from os import path, sep
 import subprocess
 
 THIS_FOLDER = path.dirname(path.abspath(__file__))
+FAB_PATH = path.join(
+    'c:', sep, 'Users', 'laurence', 'AppData', 'Local',
+    'Continuum', 'Anaconda3', 'envs', 'fabric', 'Scripts',
+    'fab.EXE'
+)
 
-print('#######################################')
-print('#######################################')
-print('#######################################')
-print('#########     {}       ################'.format(THIS_FOLDER))
-print('#######################################')
-print('#######################################')
 
 def create_session_on_server(host, email):
     return subprocess.check_output(
         [
-            'fab',
+            FAB_PATH,
             'create_session_on_server:email={}'.format(email),
             '--host={}'.format(host),
             '--hide=everthing, status',
@@ -24,6 +23,6 @@ def create_session_on_server(host, email):
 
 def reset_database(host):
     subprocess.check_call(
-        ['fab', 'reset_database', '--host={}'.format(host)],
+        [FAB_PATH, 'reset_database', '--host={}'.format(host)],
         cwd=THIS_FOLDER
     )
