@@ -2,7 +2,7 @@ from django.conf import settings
 
 from .base import FunctionalTest
 from .server_tools import create_session_on_server
-from management.commands.create_session import create_pre_authenticated_session
+from .management.commands.create_session import create_pre_authenticated_session
 
 
 class MyListTest(FunctionalTest):
@@ -17,7 +17,7 @@ class MyListTest(FunctionalTest):
         self.browser.get(self.server_url + '/404_no_such_url/')
         self.browser.add_cookie(dict(
             name=settings.SESSION_COOKIE_NAME,
-            value=session.session_key,
+            value=session_key,
             path='/',
         ))
 
