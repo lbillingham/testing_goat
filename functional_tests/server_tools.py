@@ -3,6 +3,12 @@ import subprocess
 
 THIS_FOLDER = path.dirname(path.abspath(__file__))
 
+print('#######################################')
+print('#######################################')
+print('#######################################')
+print('#########     {}       ################'.format(THIS_FOLDER))
+print('#######################################')
+print('#######################################')
 
 def create_session_on_server(host, email):
     return subprocess.check_output(
