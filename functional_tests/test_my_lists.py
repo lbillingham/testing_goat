@@ -22,13 +22,31 @@ class MyListTest(FunctionalTest):
         ))
 
     def test_logged_in_users_lists_are_saved_as_my_lists(self):
-        email = 'edith@example.com'
+        # Edith is a logged-in user
+        self.create_pre_authenticated_session('edith@example.com')
 
+        # Edith goes to the home page and starts a list
         self.browser.get(self.server_url)
-        self.wait_to_be_logged_out(email)
+        self.get_item_input_box().send_keys('reticulate splines\n')
+        self.get_item_input_box().send_keys('Immanentize eschaton\n')
+        first_list_url = self.browser.current_url
 
-        # make Edith logged in
-        self.create_pre_authenticated_session(email)
+        # she notices a 'My lists link, for the 1st time'
+        self.browser.find_element_by_link_text('My lists').click()
+        self.assertEqual(self.browser.current_url, first_list_url)
 
+        # she decides to start another list, just to be sure
         self.browser.get(self.server_url)
-        self.wait_to_be_logged_in(email)
+        self.get_item_input_box().send_keys('Click cows\n')
+        second_list_url = self.browser.current_url
+
+        # email = 'edith@example.com'
+        #
+        # self.browser.get(self.server_url)
+        # self.wait_to_be_logged_out(email)
+        #
+        # # make Edith logged in
+        # self.create_pre_authenticated_session(email)
+        #
+        # self.browser.get(self.server_url)
+        # self.wait_to_be_logged_in(email)
