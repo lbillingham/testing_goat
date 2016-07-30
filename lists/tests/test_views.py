@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 from django.template.loader import render_to_string
@@ -10,11 +11,16 @@ from lists.forms import (
     EMPTY_ITEM_ERROR, DUPLICATE_ITEM_ERROR
 )
 from lists.models import Item, List
-from lists.views import home_page
+from lists.views import home_page, new_list
+
+
+User = get_user_model()
+
 
 class HomePageTest(TestCase):
 
     maxDiff = None
+
     def test_home_page_renders_home_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home.html')
@@ -22,6 +28,7 @@ class HomePageTest(TestCase):
     def test_home_page_uses_item_form(self):
         response = self.client.get('/')
         self.assertIsInstance(response.context['form'], ItemForm)
+
 
 class NewListTest(TestCase):
 
@@ -71,11 +78,19 @@ class NewListTest(TestCase):
         response = self.client.post('/lists/new', data={'text': ''})
         self.assertIsInstance(response.context['form'], ItemForm)
 
-
     def test_invalid_list_items_are_not_saved(self):
         self.client.post('lists/new', data={'text': ''})
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
+
+    def test_list_owner_is_saved_if_user_is_authenticated(self):
+        request = HttpRequest()
+        request.user = User.objects.create(email='a@b.com')
+        request.POST['text'] = 'new list item'
+        new_list(request)
+        list_ = List.objects.first()
+        self.assertEqual(list_.owner, request.user)
+
 
 class ListViewTest(TestCase):
 
@@ -84,7 +99,7 @@ class ListViewTest(TestCase):
         response = self.client.get('/lists/{0:d}/'.format(list_.id))
         self.assertTemplateUsed(response, 'list.html')
 
-    def test_displays_all_items(self):#
+    def test_displays_all_items(self):  #
         list_ = List.objects.create()
         Item.objects.create(text='ooo item 1', list=list_)
         Item.objects.create(text='two-thy item', list=list_)
@@ -185,5 +200,12 @@ class ListViewTest(TestCase):
 class MyLists(TestCase):
 
     def test_my_lists_url_renders_my_lists_template(self):
+        User.objects.create(email='a@b.com')
         response = self.client.get('/lists/users/a@b.com/')
         self.assertTemplateUsed(response, 'my_lists.html')
+
+    def test_passes_correct_owner_to_template(self):
+        User.objects.create(email='wrong@owner.com')
+        correct_user = User.objects.create(email='a@b.com')
+        response = self.client.get('/lists/users/a@b.com/')
+        self.assertEqual(response.context['owner'], correct_user)
