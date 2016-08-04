@@ -4,7 +4,7 @@ from django.http import HttpRequest
 from django.template.loader import render_to_string
 from django.test import TestCase
 from django.utils.html import escape
-from unittest import skip
+import unittest
 from unittest.mock import Mock, patch
 
 from lists.forms import (
@@ -12,7 +12,7 @@ from lists.forms import (
     EMPTY_ITEM_ERROR, DUPLICATE_ITEM_ERROR
 )
 from lists.models import Item, List
-from lists.views import home_page, new_list
+from lists.views import home_page, new_list, new_list2
 
 
 User = get_user_model()
@@ -31,7 +31,19 @@ class HomePageTest(TestCase):
         self.assertIsInstance(response.context['form'], ItemForm)
 
 
-class NewListTest(TestCase):
+@patch('lists.views.NewListForm')
+class NewListViewTest(unittest.TestCase):
+
+    def setUp(self):
+        self.request = HttpRequest()
+        self.request.POST['text'] = 'new list item'
+
+    def test_passes_POST_data_to_NewListForm(self, mockNewListForm):
+        new_list2(self.request)
+        mockNewListForm.assert_called_once_with(data=self.request.POST)
+
+
+class NewListViewIntegratedTest(TestCase):
 
     def test_saving_a_POST_request(self):
         self.client.post(
@@ -84,22 +96,31 @@ class NewListTest(TestCase):
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
 
-    @patch('lists.views.List')
+    @unittest.skip
     def test_list_owner_is_saved_if_user_is_authenticated(self, mockList):
-        mock_list = List.objects.create()
-        mock_list.save = Mock()
-        mockList.return_value = mock_list
         request = HttpRequest()
-        request.user = User.objects.create()
+        request.user = User.objects.create(email='a@b.com')
         request.POST['text'] = 'new list item'
-
-        def check_owner_assigned():
-            self.assertEqual(mock_list.owner, request.user)
-
-        mock_list.save.side_effect = check_owner_assigned
-
         new_list(request)
-        mock_list.save.assert_called_once_with()
+        list_ = List.objects.first()
+        self.assertEqual(list_.owner, request.user)
+
+    # @patch('lists.views.List')
+    # def test_list_owner_is_saved_if_user_is_authenticated(self, mockList):
+    #     mock_list = List.objects.create()
+    #     mock_list.save = Mock()
+    #     mockList.return_value = mock_list
+    #     request = HttpRequest()
+    #     request.user = User.objects.create()
+    #     request.POST['text'] = 'new list item'
+    #
+    #     def check_owner_assigned():
+    #         self.assertEqual(mock_list.owner, request.user)
+    #
+    #     mock_list.save.side_effect = check_owner_assigned
+    #
+    #     new_list(request)
+    #     mock_list.save.assert_called_once_with()
 
 
 class ListViewTest(TestCase):

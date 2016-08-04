@@ -2,7 +2,11 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 
-from lists.forms import ItemForm, ExistingListItemForm
+from lists.forms import (
+    ItemForm,
+    ExistingListItemForm,
+    NewListForm
+)
 from lists.models import Item, List
 
 User = get_user_model()
@@ -33,6 +37,10 @@ def new_list(request):
         return redirect(list_)
     else:
         return render(request, 'home.html', {'form': form})
+
+
+def new_list2(request):
+    NewListForm(data=request.POST)
 
 
 def my_lists(request, email):
