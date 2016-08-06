@@ -40,7 +40,11 @@ def new_list(request):
 
 
 def new_list2(request):
-    NewListForm(data=request.POST)
+    form = NewListForm(data=request.POST)
+    list_ = form.save(owner=request.user)
+    if form.is_valid():
+        return redirect(list_)
+    return render(request, 'home.html', {'form': form})
 
 
 def my_lists(request, email):
