@@ -1,6 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from lists.models import Item, List
+
+User = get_user_model()
+
 
 class ItemModelTests(TestCase):
     def test_default_text(self):
@@ -27,7 +31,7 @@ class ItemModelTests(TestCase):
         self.assertEqual(list(Item.objects.all()), in_expected_order)
 
     def test_cannot_add_empty_list_item(self):
-        list_ =  List.objects.create()
+        list_ = List.objects.create()
         item = Item(list=list_, text='')
         with self.assertRaises(ValidationError):
             item.save()
@@ -45,11 +49,34 @@ class ItemModelTests(TestCase):
         list2 = List.objects.create()
         item1 = Item.objects.create(list=list1, text='cross list dupe')
         item2 = Item.objects.create(list=list2, text='cross list dupe')
-        item1.full_clean() # shouldn't raise
-        item2.full_clean() # shouldn't raise
+        item1.full_clean()  # shouldn't raise
+        item2.full_clean()  # shouldn't raise
 
 
 class ListModelTests(TestCase):
+
     def test_can_get_absolute_url(self):
         list_ = List.objects.create()
-        self.assertEqual(list_.get_absolute_url(), '/lists/{:d}/'.format(list_.id))
+        self.assertEqual(
+            list_.get_absolute_url(),
+            '/lists/{:d}/'.format(list_.id)
+        )
+
+    def test_create_new_creates_list_and_1st_item(self):
+        List.create_new(first_item_text='new item text')
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, 'new item text')
+        new_list = List.objects.first()
+        self.assertEqual(new_item.list, new_list)
+
+    def test_create_new_optionally_saves_owner(self):
+        user = User.objects.create()
+        List.create_new(first_item_text='new item text', owner=user)
+        new_list = List.objects.first()
+        self.assertEqual(new_list.owner, user)
+
+    def test_lists_can_have_owners(self):
+        List(owner=User())  # should not raise
+
+    def test_list_owner_is_optional(self):
+        List().full_clean()  # should not raise
