@@ -49,6 +49,12 @@ class NewListViewTest(unittest.TestCase):
         new_list2(self.request)
         mock_form.save.assert_called_once_with(owner=self.request.user)
 
+    def test_does_not_save_if_form_is_invalid(self, mockNewListForm):
+        mock_form = mockNewListForm.return_value
+        mock_form.is_valid.return_value = False
+        new_list2(self.request)
+        self.assertFalse(mock_form.save.called)
+
     @patch('lists.views.redirect')
     def test_redirects_to_form_returned_object_if_form_valid(
         self, mock_redirect, mockNewListForm
@@ -125,8 +131,7 @@ class NewListViewIntegratedTest(TestCase):
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
 
-    @unittest.skip
-    def test_list_owner_is_saved_if_user_is_authenticated(self, mockList):
+    def test_list_owner_is_saved_if_user_is_authenticated(self):
         request = HttpRequest()
         request.user = User.objects.create(email='a@b.com')
         request.POST['text'] = 'new list item'
