@@ -1,3 +1,5 @@
+import time
+
 from django.conf import settings
 
 from .base import FunctionalTest
@@ -37,6 +39,7 @@ class MyListTest(FunctionalTest):
         # She sees that her list is in there, named according to
         #  its first list item
         self.browser.find_element_by_link_text('reticulate splines').click()
+        time.sleep(1)
         self.assertEqual(self.browser.current_url, first_list_url)
 
         # she decides to start another list, just to be sure
