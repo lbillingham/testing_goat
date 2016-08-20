@@ -89,47 +89,10 @@ class NewListViewIntegratedTest(TestCase):
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, 'A new list item')
 
-    def test_displays_only_itms_for_that_list(self):
-        correct_list = List.objects.create()
-        Item.objects.create(text='ooo item 1', list=correct_list)
-        Item.objects.create(text='two-thy item', list=correct_list)
-        other_list = List.objects.create()
-        Item.objects.create(text='other list item 1', list=other_list)
-        Item.objects.create(text='other list item 2', list=other_list)
-
-        response = self.client.get('/lists/{0:d}/'.format(correct_list.id))
-
-        self.assertContains(response, 'ooo item 1')
-        self.assertContains(response, 'two-thy item')
-        self.assertNotContains(response, 'other list item 1')
-        self.assertNotContains(response, 'other list item 2')
-
-    def test_redirects_after_POST(self):
-        response = self.client.post(
-            '/lists/new',
-            data={'text': 'A new list item'}
-            )
-        self.assertEqual(response.status_code, 302)
-        new_list = List.objects.first()
-        self.assertRedirects(response, '/lists/{0:d}/'.format(new_list.id))
-
-    def test_for_invalid_input_renders_home_template(self):
+    def test_for_invalid_input_does_not_save_but_shows_errors(self):
         response = self.client.post('/lists/new', data={'text': ''})
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'home.html')
-
-    def test_validation_errors_are_shown_on_home_page(self):
-        response = self.client.post('/lists/new', data={'text': ''})
-        self.assertContains(response, escape(EMPTY_ITEM_ERROR))
-
-    def test_for_invalid_input_passes_form_to_template(self):
-        response = self.client.post('/lists/new', data={'text': ''})
-        self.assertIsInstance(response.context['form'], ItemForm)
-
-    def test_invalid_list_items_are_not_saved(self):
-        self.client.post('lists/new', data={'text': ''})
         self.assertEqual(List.objects.count(), 0)
-        self.assertEqual(Item.objects.count(), 0)
+        self.assertContains(response, escape(EMPTY_ITEM_ERROR))
 
     def test_list_owner_is_saved_if_user_is_authenticated(self):
         request = HttpRequest()
