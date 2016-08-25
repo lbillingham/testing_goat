@@ -10,7 +10,6 @@ from .server_tools import reset_database
 class FunctionalTest(StaticLiveServerTestCase):
     """
     Base class for other functional tests.
-    test
     """
     @classmethod
     def setUpClass(cls):
@@ -32,7 +31,7 @@ class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
         if self.against_staging:
             reset_database(self.server_host)
-        with open('debug_firefox/firefox.log', 'w') as log_file:
+        with open('/home/laurence/debug_firefox/firefox.log', 'w') as log_file:
             binary = FirefoxBinary('/usr/bin/firefox', log_file=log_file)
             self.browser = webdriver.Firefox(firefox_binary=binary)
         self.browser.implicitly_wait(3)
