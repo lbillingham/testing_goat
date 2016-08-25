@@ -10,6 +10,7 @@ from .server_tools import reset_database
 class FunctionalTest(StaticLiveServerTestCase):
     """
     Base class for other functional tests.
+    test
     """
     @classmethod
     def setUpClass(cls):
