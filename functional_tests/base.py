@@ -9,7 +9,7 @@ from .server_tools import reset_database
 
 class FunctionalTest(StaticLiveServerTestCase):
     """
-    Base class for other functional tests.
+    Base class for other Functional Tests.
     """
     @classmethod
     def setUpClass(cls):
