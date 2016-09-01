@@ -1,10 +1,16 @@
+from datetime import datetime
+import os
+import sys
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from selenium.webdriver.support.ui import WebDriverWait
-import sys
 
 from .server_tools import reset_database
+
+FILE_DIR = os.path.dirname(os.path.abspath(__file__))
+SCREEN_DUMP_LOCATION = os.path.join(FILE_DIR, 'screendumps')
+FIREFOX_LOG_LOCATION = os.path.join(FILE_DIR, 'debug_firefox')
 
 
 class FunctionalTest(StaticLiveServerTestCase):
@@ -31,13 +37,30 @@ class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
         if self.against_staging:
             reset_database(self.server_host)
-        with open('/home/laurence/debug_firefox/firefox.log', 'w') as log_file:
-            binary = FirefoxBinary('/usr/bin/firefox', log_file=log_file)
+        if not os.path.exists(FIREFOX_LOG_LOCATION):
+            os.makedirs(FIREFOX_LOG_LOCATION)
+        if os.name == 'nt':
+            browser_loc = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'
+        elif os.name == 'posix':
+            browser_loc = '/usr/bin/firefox'
+        else:
+            raise EnvironmentError('only works on windows or posix')
+        with open(FIREFOX_LOG_LOCATION + 'firefox.log', 'w') as log_file:
+            binary = FirefoxBinary(browser_loc, log_file=log_file)
             self.browser = webdriver.Firefox(firefox_binary=binary)
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
+        if self._test_has_failed():
+            if not os.path.exists(SCREEN_DUMP_LOCATION):
+                os.makedirs(SCREEN_DUMP_LOCATION)
+            for idx, handle in enumerate(self.browser.window_handles):
+                self._windowid = idx
+                self.browser.switch_to_window(handle)
+                self.take_screenshot()
+                self.dump_html()
         self.browser.quit()
+        super().tearDown()
 
     def check_for_row_in_list_table(self, row_text):
         table = self.browser.find_element_by_id('id_list_table')
@@ -65,3 +88,32 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.wait_for_element_with_id('id_login')
         navbar = self.browser.find_element_by_css_selector('.navbar')
         self.assertNotIn(email, navbar.text)
+
+    def _test_has_failed(self):
+        for method, error in self._outcome.errors:
+            if error:
+                return True
+        return False
+
+    def take_screenshot(self):
+        filename = self._get_filename() + '.png'
+        print('putting screenshot in ', filename)
+        self.browser.get_screenshot_as_file(filename)
+
+    def dump_html(self):
+        filename = self._get_filename() + '.html'
+        print('dumping page HTML to ', filename)
+        with open(filename, 'w') as file_:
+            file_.write(self.browser.page_source)
+
+    def _get_filename(self):
+        timestamp = datetime.now().isoformat().replace(':', '.')[:19]
+        outbare = '{folder}/{classname}.{method}-window{windowid}-{timestamp}'
+        outstr = outbare.format(
+            folder=SCREEN_DUMP_LOCATION,
+            classname=self.__class__.__name__,
+            method=self._testMethodName,
+            windowid=self._windowid,
+            timestamp=timestamp
+        )
+        return outstr

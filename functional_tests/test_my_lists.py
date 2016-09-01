@@ -6,6 +6,8 @@ from .base import FunctionalTest
 from .server_tools import create_session_on_server
 from .management.commands.create_session import create_pre_authenticated_session
 
+def call_racecond_hack():
+    time.sleep(3)
 
 class MyListTest(FunctionalTest):
 
@@ -35,11 +37,12 @@ class MyListTest(FunctionalTest):
 
         # she notices a 'My lists link, for the 1st time'
         self.browser.find_element_by_link_text('My lists').click()
+        call_racecond_hack()
 
         # She sees that her list is in there, named according to
         #  its first list item
         self.browser.find_element_by_link_text('reticulate splines').click()
-        time.sleep(1)
+        call_racecond_hack()
         self.assertEqual(self.browser.current_url, first_list_url)
 
         # she decides to start another list, just to be sure
@@ -49,11 +52,14 @@ class MyListTest(FunctionalTest):
 
         # Under "my lists", her new list appears
         self.browser.find_element_by_link_text('My lists').click()
+        call_racecond_hack()
         self.browser.find_element_by_link_text('Click cows').click()
+        call_racecond_hack()
         self.assertEqual(self.browser.current_url, second_list_url)
 
         # she logs out. The "My Lists" option dissapears
         self.browser.find_element_by_id('id_logout').click()
+        call_racecond_hack()
         self.assertEqual(
             self.browser.find_elements_by_link_text('My lists'),
             []

@@ -5,3 +5,5 @@ superlists/functional_tests/__pycache__/
 virtualenv/
 *.pyc
 *.sqlite3
+functional_tests/screendumps
+functional_tests/debug_firefox
