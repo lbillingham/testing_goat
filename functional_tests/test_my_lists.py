@@ -51,7 +51,10 @@ class MyListTest(FunctionalTest):
 
         # Under "my lists", her new list appears
         self.browser.find_element_by_link_text('My lists').click()
-        self.browser.find_element_by_link_text('Click cows').click()
+        self.wait_for(
+            lambda: self.browser.find_element_by_link_text('Click cows').click(),
+            timeout=20
+        )
         self.wait_for(
             lambda: self.assertEqual(self.browser.current_url, second_list_url),
             timeout=50
