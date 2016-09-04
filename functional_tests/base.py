@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from .server_tools import reset_database
 
-DEFAULT_WAIT = 5
+DEFAULT_WAIT = 10
 FILE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCREEN_DUMP_LOCATION = os.path.join(FILE_DIR, 'screendumps')
 
