@@ -6,7 +6,6 @@ import time
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from selenium.webdriver.support.ui import WebDriverWait
 
 from .server_tools import reset_database
@@ -14,7 +13,6 @@ from .server_tools import reset_database
 DEFAULT_WAIT = 5
 FILE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCREEN_DUMP_LOCATION = os.path.join(FILE_DIR, 'screendumps')
-FIREFOX_LOG_LOCATION = os.path.join(FILE_DIR, 'debug_firefox')
 
 
 class FunctionalTest(StaticLiveServerTestCase):
@@ -41,17 +39,7 @@ class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
         if self.against_staging:
             reset_database(self.server_host)
-        if not os.path.exists(FIREFOX_LOG_LOCATION):
-            os.makedirs(FIREFOX_LOG_LOCATION)
-        if os.name == 'nt':
-            browser_loc = 'C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe'
-        elif os.name == 'posix':
-            browser_loc = '/usr/bin/firefox'
-        else:
-            raise EnvironmentError('only works on windows or posix')
-        with open(FIREFOX_LOG_LOCATION + 'firefox.log', 'w') as log_file:
-            binary = FirefoxBinary(browser_loc, log_file=log_file)
-            self.browser = webdriver.Firefox(firefox_binary=binary)
+        self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
