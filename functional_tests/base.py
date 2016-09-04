@@ -1,13 +1,17 @@
 from datetime import datetime
 import os
 import sys
+import time
+
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from selenium.webdriver.support.ui import WebDriverWait
 
 from .server_tools import reset_database
 
+DEFAULT_WAIT = 5
 FILE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCREEN_DUMP_LOCATION = os.path.join(FILE_DIR, 'screendumps')
 FIREFOX_LOG_LOCATION = os.path.join(FILE_DIR, 'debug_firefox')
@@ -78,6 +82,16 @@ class FunctionalTest(StaticLiveServerTestCase):
                 element_id, self.browser.find_element_by_tag_name('body').text
             )
         )
+
+    def wait_for(self, function_with_assertion, timeout=DEFAULT_WAIT):
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            try:
+                return function_with_assertion()
+            except (AssertionError, WebDriverException):
+                time.sleep(0.1)
+        # one more try, which will raise any errors if they are outstanding
+        return function_with_assertion()
 
     def wait_to_be_logged_in(self, email):
         self.wait_for_element_with_id('id_logout')
