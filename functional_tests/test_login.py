@@ -22,7 +22,8 @@ class LoginTest(FunctionalTest):
             'authentication_email'
         ).send_keys(TEST_EMAIL)
         self.wait_for(
-            lambda: self.browser.find_element_by_tag_name('button').click()
+            lambda: self.browser.find_element_by_tag_name('button').click(),
+            timeout=50
         )
 
         # The Persona window closes
