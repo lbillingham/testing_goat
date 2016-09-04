@@ -41,7 +41,7 @@ class MyListTest(FunctionalTest):
         self.browser.find_element_by_link_text('reticulate splines').click()
         self.wait_for(
             lambda: self.assertEqual(self.browser.current_url, first_list_url),
-            timeout=50
+            timeout=150
         )
 
         # she decides to start another list, just to be sure
