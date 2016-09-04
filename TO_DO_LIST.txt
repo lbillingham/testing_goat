@@ -24,3 +24,4 @@
     15. Deploy new code on live server
     16. Try [appendix D](http://chimera.labs.oreilly.com/books/1234000000754/apd.html) on `.../database/db_in_need_of_data_migration.sqlite3.bak`
     ~~17. Try to get `js` to [hide error message on click](http://chimera.labs.oreilly.com/books/1234000000754/ch13.html#_javascript_testing_in_the_tdd_cycle)~~
+    test
