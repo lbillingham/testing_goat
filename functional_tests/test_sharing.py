@@ -1,5 +1,6 @@
 from selenium import webdriver
 from .base import FunctionalTest
+fro .home_and_list_pages import HomePage
 
 
 def quit_if_possible(browser):
@@ -23,14 +24,25 @@ class SharingTest(FunctionalTest):
 
         # Edith goes to her home page and starts a list
         self.browser = edith_browser
-        self.browser.get(self.server_url)
-        self.get_item_input_box().send_keys('Get help\n')
+        list_page = HomePage(self).start_new_list('Get help')
 
         # Edith notices a 'Share this list' option
-        share_box = self.browser.find_element_by_css_selector(
-            'input[name=email]'
-        )
+
+        # She notices a "Share this list" option
+        # self.wait_for(
+        #     lambda:  self.assertEqual(
+        #     self.browser.find_element_by_css_selector(
+        #         'input[name=email]'
+        #     ).get_attribute('placeholder'),
+        #     'your-friend@example.com'
+        #     )
+        # )
+        share_box = list_page.get_share_box()
         self.assertEqual(
             share_box.get_attribute('placeholder'),
             'your-friend@example.com'
         )
+
+        # Edith shares her list
+        # and sees that it updates to show it is shared with Bob
+        list_page.share_list_with('bob@example.com')
