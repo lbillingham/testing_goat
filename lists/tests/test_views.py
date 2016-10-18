@@ -12,7 +12,7 @@ from lists.forms import (
     EMPTY_ITEM_ERROR, DUPLICATE_ITEM_ERROR
 )
 from lists.models import Item, List
-from lists.views import home_page, new_list
+from lists.views import home_page, new_list, share_list
 
 
 User = get_user_model()
@@ -220,3 +220,13 @@ class MyLists(TestCase):
         correct_user = User.objects.create(email='a@b.com')
         response = self.client.get('/lists/users/a@b.com/')
         self.assertEqual(response.context['owner'], correct_user)
+
+
+class ShareListViewTest(TestCase):
+    def test_POST_redirects_to_lists_page(self):
+        list_ = List.objects.create()
+        response = self.client.post(
+            '/{}/share'.format(list_.id),
+            data={}
+        )
+        self.assertRedirects(response, list_.get_absolute_url())
