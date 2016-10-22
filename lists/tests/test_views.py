@@ -226,7 +226,7 @@ class ShareListViewTest(TestCase):
     def test_POST_redirects_to_lists_page(self):
         list_ = List.objects.create()
         response = self.client.post(
-            '/{}/share'.format(list_.id),
-            data={}
+            '/lists/{}/share'.format(list_.id),
+            {}
         )
         self.assertRedirects(response, list_.get_absolute_url())
