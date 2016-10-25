@@ -230,3 +230,13 @@ class ShareListViewTest(TestCase):
             {}
         )
         self.assertRedirects(response, list_.get_absolute_url())
+
+    def test_can_share_list_with_sharee(self):
+        sharee_email = 'sharee@example.com'
+        sharee = User.objects.create(email=sharee_email)
+        list_ = List.objects.create()
+        response = self.client.post(
+            '/lists/{}/share'.format(list_.id),
+            {'email': sharee_email}
+        )
+        self.assertIn(sharee, list_.shared_with.all())
