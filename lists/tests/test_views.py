@@ -227,7 +227,7 @@ class ShareListViewTest(TestCase):
         list_ = List.objects.create()
         response = self.client.post(
             '/lists/{}/share'.format(list_.id),
-            {}
+            {'email': 'x@example.com'}
         )
         self.assertRedirects(response, list_.get_absolute_url())
 
