@@ -10,6 +10,10 @@ class List(models.Model):
         blank=True,
         null=True
     )
+    shared_with = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='sharing_with_users'
+    )
 
     def get_absolute_url(self):
         return reverse('view_list', args=[self.id])
