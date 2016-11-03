@@ -13,7 +13,7 @@
     </ul>
     <h2>Lists shared with you by others</h2>
     <ul>
-    {% for list in owner.shared_lists.all %}
+    {% for list in owner.sharing_with_users.all %}
         <li>
             <a href="{{ list.get_absolute_url }}">{{ list.name }}</a>
             ({{ list.owner.email }})
