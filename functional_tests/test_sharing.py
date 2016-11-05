@@ -42,7 +42,7 @@ class SharingTest(FunctionalTest):
         HomePage(self).go_to_home_page().go_to_my_lists_page()
 
         # He sees that Edith's list is in there
-        self.browser.find_element_by_css_selector('Get help').click()
+        self.browser.find_element_by_link_text('Get help').click()
 
         # On the list page Bob can see that it belongs to Edith
         self.wait_for(lambda: self.assertEqual(
